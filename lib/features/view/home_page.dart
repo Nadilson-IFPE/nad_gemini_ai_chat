@@ -18,14 +18,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Column(
+      body: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text(
-              "GOOGLE_GEMINI_AI_API_KEY: ${Env.apiKey}",
-            ),
-          ),
+              // Apenas para fins de testes do arquivo ".env"
+              // For testing purposes of the ".env" file only
+              //child: Text(
+              //  "GOOGLE_GEMINI_AI_API_KEY: ${Env.apiKey}",
+              //),
+              ),
         ],
       ),
     );
