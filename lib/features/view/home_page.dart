@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:intl/intl.dart';
@@ -46,11 +47,12 @@ class _HomePageState extends State<HomePage> {
 
   final List<Message> _msg = [];
 
-  bool scrollPermitido = false;
-
-  void scrollListToEnd() async {
-    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+  Future<void> scrollListToEnd() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
+    });
   }
 
   Future<void> sendMessageToGeminiAI() async {
@@ -65,14 +67,16 @@ class _HomePageState extends State<HomePage> {
           date: DateTime.now(),
         ),
       );
-
-      scrollListToEnd();
     });
 
     // CUIDADO: 'gemini-pro' é um serviço pago.
+    //
     // CAUTION: 'gemini-pro' is a paid service.
+    //
     // https://ai.google.dev/pricing
+    //
     // Se pretende mesmo usar, descomente o código desativado e desative os próximos Response e SetState.
+    //
     // If you really want to use it, uncomment the disabled code and comment the next Response and SetState.
 
     //var content = [Content.text(message)];
@@ -89,6 +93,9 @@ class _HomePageState extends State<HomePage> {
       scrollListToEnd();
     }); */
 
+    // Para testes locais com a funcionalidade do ListView de adicionar itens e permitir rolagem quando a lista for maior que a tela exibida
+    //
+    // For local testing with the ListView functionality of adding items and allowing scrolling when the list is larger than the displayed screen
     var response = message;
     setState(() {
       _msg.add(
@@ -109,6 +116,7 @@ class _HomePageState extends State<HomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromARGB(255, 245, 249, 233),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 194, 192, 147),
@@ -124,125 +132,115 @@ class _HomePageState extends State<HomePage> {
         child: SizedBox(
           width: screenWidth,
           height: screenHeight,
-          child: PopScope(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              // Apenas para fins de testes do arquivo ".env"
-              // For testing purposes of the ".env" file only
-              //children: [
-              //  Center(
-              //child: Text(
-              //  "GOOGLE_GEMINI_AI_API_KEY: ${Env.apiKey}",
-              //),
-              //      ),
-              //],
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      controller: _scrollController,
-                      itemCount: _msg.length,
-                      //reverse: true,
-                      itemBuilder: (context, index) {
-                        final msg = _msg[index];
-                        if (index == _msg.length) {
-                          return Container(
-                            height: 140,
-                          );
-                        } else {
-                          return GeminiMessages(
-                            isUser: msg.isUser,
-                            message: msg.message,
-                            date: DateFormat('dd/MM/yyyy - HH:mm')
-                                .format(msg.date),
-                          );
-                        }
-                      },
-                    ),
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            // Apenas para fins de testes do arquivo ".env"
+            // For testing purposes of the ".env" file only
+            //children: [
+            //  Center(
+            //child: Text(
+            //  "GOOGLE_GEMINI_AI_API_KEY: ${Env.apiKey}",
+            //),
+            //      ),
+            //],
+            children: [
+              Flexible(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  itemCount: _msg.length,
+                  //reverse: true,
+                  itemBuilder: (context, index) {
+                    return GeminiMessages(
+                      isUser: _msg[index].isUser,
+                      message: _msg[index].message,
+                      date: DateFormat('dd/MM/yyyy - HH:mm')
+                          .format(_msg[index].date),
+                    );
+                  },
+                  //reverse: true,
                 ),
-                SizedBox(
-                  child: Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 15),
-                      child: SizedBox(
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 100,
-                                  child: TextFormField(
-                                    focusNode: myFocusNode,
-                                    maxLines: null,
-                                    controller: _msgEditingController,
-                                    decoration: InputDecoration(
-                                      floatingLabelStyle: const TextStyle(
+              ),
+              SizedBox(
+                child: Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 15),
+                    child: SizedBox(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 100,
+                                child: TextFormField(
+                                  focusNode: myFocusNode,
+                                  maxLines: null,
+                                  controller: _msgEditingController,
+                                  decoration: InputDecoration(
+                                    floatingLabelStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 194, 192, 147)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      borderSide: const BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 194, 192, 147),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      borderSide: const BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 194, 192, 147),
+                                      ),
+                                    ),
+                                    label: const Text(
+                                      "Digite uma pergunta ou comando",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           color: Color.fromARGB(
                                               255, 194, 192, 147)),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                        borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 194, 192, 147),
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                        borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 194, 192, 147),
-                                        ),
-                                      ),
-                                      label: const Text(
-                                        "Digite uma pergunta ou comando",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 194, 192, 147)),
-                                      ),
                                     ),
                                   ),
                                 ),
-                                const Spacer(),
-                                IconButton(
-                                  padding: const EdgeInsets.all(15),
-                                  iconSize: 32,
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        const Color.fromARGB(
-                                            255, 194, 192, 147)),
-                                    foregroundColor: MaterialStateProperty.all(
-                                        const Color.fromARGB(
-                                            255, 245, 249, 233)),
-                                    shape: MaterialStateProperty.all(
-                                      const CircleBorder(),
-                                    ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                padding: const EdgeInsets.all(15),
+                                iconSize: 32,
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromARGB(255, 194, 192, 147)),
+                                  foregroundColor: MaterialStateProperty.all(
+                                      const Color.fromARGB(255, 245, 249, 233)),
+                                  shape: MaterialStateProperty.all(
+                                    const CircleBorder(),
                                   ),
-                                  onPressed: () {
-                                    if (_msgEditingController.text.isNotEmpty) {
-                                      sendMessageToGeminiAI();
-                                      scrollListToEnd();
-                                      // myFocusNode.requestFocus();
-                                    } else {
-                                      myFocusNode.requestFocus();
-                                    }
-                                  },
-                                  icon: const Icon(Icons.arrow_upward_sharp),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                onPressed: () {
+                                  if (_msgEditingController.text
+                                      .trim()
+                                      .isNotEmpty) {
+                                    sendMessageToGeminiAI();
+                                    //scrollListToEnd();
+                                    // myFocusNode.requestFocus();
+                                  } else {
+                                    myFocusNode.requestFocus();
+                                  }
+                                },
+                                icon: const Icon(Icons.arrow_upward_sharp),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

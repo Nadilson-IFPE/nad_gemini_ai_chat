@@ -23,8 +23,8 @@ class GeminiMessages extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: isUser
-            ? Color.fromARGB(255, 183, 201, 171)
-            : Color.fromARGB(255, 241, 231, 194),
+            ? const Color.fromARGB(255, 183, 201, 171)
+            : const Color.fromARGB(255, 241, 231, 194),
         borderRadius: BorderRadius.only(
           topLeft: const Radius.circular(10),
           bottomLeft: isUser ? const Radius.circular(10) : Radius.zero,
