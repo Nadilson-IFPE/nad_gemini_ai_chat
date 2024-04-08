@@ -1,9 +1,9 @@
-class Message {
+class MessageModel {
   final bool isUser;
   final String message;
   final DateTime date;
 
-  Message({
+  MessageModel({
     required this.isUser,
     required this.message,
     required this.date,

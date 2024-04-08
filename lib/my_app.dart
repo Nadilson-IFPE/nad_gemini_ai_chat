@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:nad_gemini_ai_chat/features/view/home_page.dart';
+import 'package:nad_gemini_ai_chat/features/view/splash_screen.dart';
+import 'package:nad_gemini_ai_chat/utils/devices.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //  double screenWidth = MediaQuery.of(context).size.width;
-    //  double screenHeight = MediaQuery.of(context).size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Google Gemini AI App',
+      title: 'Google Gemini AI Chat App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'Google Gemini AI App'),
+      home: Devices.isMobilePhone(context)
+          ? const SplashScreen()
+          : const HomePage(title: 'Google Gemini AI Chat App'),
     );
   }
 }

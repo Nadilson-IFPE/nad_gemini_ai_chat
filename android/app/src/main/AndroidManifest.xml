@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="nad_gemini_ai_chat"
+        android:label="Google Gemini AI Chat App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

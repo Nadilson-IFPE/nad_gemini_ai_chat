@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:intl/intl.dart';
 import 'package:nad_gemini_ai_chat/features/config/env.dart';
-import 'package:nad_gemini_ai_chat/features/model/message.dart';
+import 'package:nad_gemini_ai_chat/features/model/message_model.dart';
 import 'package:nad_gemini_ai_chat/features/view/gemini_messages.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +26,8 @@ class _HomePageState extends State<HomePage> {
     _msgEditingController;
     _scrollController;
     myFocusNode = FocusNode();
+    /* SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values); */
     super.initState();
   }
 
@@ -44,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   //final _generative_ai_model =
   //    GenerativeModel(model: 'gemini-pro', apiKey: Env.apiKey);
 
-  final List<Message> _msg = [];
+  final List<MessageModel> _msg = [];
 
   Future<void> scrollListToEnd() async {
     await Future.delayed(const Duration(milliseconds: 300));
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       _msg.add(
-        Message(
+        MessageModel(
           isUser: true,
           message: message,
           date: DateTime.now(),
@@ -76,9 +78,9 @@ class _HomePageState extends State<HomePage> {
     //
     // https://ai.google.dev/pricing
     //
-    // Se pretende mesmo usar, descomente o código desativado e desative os próximos Response e SetState.
+    // Se pretende mesmo usar, descomente o código desativado e desative o último SetState().
     //
-    // If you really want to use it, uncomment the disabled code and comment the next Response and SetState.
+    // If you really want to use it, uncomment the disabled code and comment the last SetState().
 
     //var content = [Content.text(message)];
     /* var response = await _generative_ai_model.generateContent(content);
@@ -97,12 +99,11 @@ class _HomePageState extends State<HomePage> {
     // Para testes locais com a funcionalidade do ListView de adicionar itens e permitir rolagem quando a lista for maior que a tela exibida
     //
     // For local testing with the ListView functionality of adding items and allowing scrolling when the list is larger than the displayed screen
-    var response = message;
     setState(() {
       _msg.add(
-        Message(
+        MessageModel(
           isUser: false,
-          message: response,
+          message: message,
           date: DateTime.now(),
         ),
       );

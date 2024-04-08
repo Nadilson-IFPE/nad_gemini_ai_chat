@@ -1,4 +1,4 @@
-# Google Gemini AI App
+# Google Gemini AI Chat App
 
 Flutter application for interacting with Google's Gemini AI.
 
@@ -22,13 +22,15 @@ env.g.dart
 ### About security
 When you publish your own version of this application, don't forget to generate an apk file with the source code properly obfuscated using the following command:
 
-```
 Android:
+
+```
 flutter build apk --obfuscate --split-debug-info=./debug_info
 ```
 
-```
 iOS:
+
+```
 flutter build ios --obfuscate --split-debug-info=./debug_info
 ```
 
@@ -53,13 +55,15 @@ env.g.dart
 
 Quando você for publicar a sua própria versão deste aplicativo, não esqueça de gerar um arquivo apk com o código-fonte devidamente ofuscado utilizando o comando a seguir:
 
-```
 Android:
+
+```
 flutter build apk --obfuscate --split-debug-info=./debug_info
 ```
 
-```
 iOS:
+
+```
 flutter build ios --obfuscate --split-debug-info=./debug_info
 ```
 
@@ -69,4 +73,4 @@ flutter build ios --obfuscate --split-debug-info=./debug_info
 
 ### Screenshot
 
-![Google Gemini AI App by Nadilson](https://github.com/Nadilson-IFPE/nad_gemini_ai_chat/assets/11899797/758041ee-8954-4913-9933-23a09d7e3164)
+![Google Gemini AI Chat App by Nadilson](https://github.com/Nadilson-IFPE/nad_gemini_ai_chat/assets/11899797/758041ee-8954-4913-9933-23a09d7e3164)
