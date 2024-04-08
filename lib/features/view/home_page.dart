@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:intl/intl.dart';
 import 'package:nad_gemini_ai_chat/features/config/env.dart';
@@ -67,6 +66,8 @@ class _HomePageState extends State<HomePage> {
           date: DateTime.now(),
         ),
       );
+
+      scrollListToEnd();
     });
 
     // CUIDADO: 'gemini-pro' é um serviço pago.
@@ -105,6 +106,8 @@ class _HomePageState extends State<HomePage> {
           date: DateTime.now(),
         ),
       );
+
+      scrollListToEnd();
     });
 
     scrollListToEnd();
