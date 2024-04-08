@@ -62,3 +62,11 @@ flutter build apk --obfuscate --split-debug-info=./debug_info
 iOS:
 flutter build ios --obfuscate --split-debug-info=./debug_info
 ```
+
+
+<sub>------------------------------------------</sub>
+
+
+### Screenshot
+
+![Google Gemini AI App by Nadilson](https://github.com/Nadilson-IFPE/nad_gemini_ai_chat/assets/11899797/758041ee-8954-4913-9933-23a09d7e3164)
