@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+//import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:intl/intl.dart';
-import 'package:nad_gemini_ai_chat/features/config/env.dart';
+//import 'package:nad_gemini_ai_chat/features/config/env.dart';
 import 'package:nad_gemini_ai_chat/features/model/message_model.dart';
 import 'package:nad_gemini_ai_chat/features/view/gemini_messages.dart';
 
@@ -26,8 +26,6 @@ class _HomePageState extends State<HomePage> {
     _msgEditingController;
     _scrollController;
     myFocusNode = FocusNode();
-    /* SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values); */
     super.initState();
   }
 
@@ -148,13 +146,12 @@ class _HomePageState extends State<HomePage> {
             //      ),
             //],
             children: [
-              Flexible(
+              Expanded(
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
                   controller: _scrollController,
                   itemCount: _msg.length,
-                  //reverse: true,
                   itemBuilder: (context, index) {
                     return GeminiMessages(
                       isUser: _msg[index].isUser,
@@ -163,83 +160,78 @@ class _HomePageState extends State<HomePage> {
                           .format(_msg[index].date),
                     );
                   },
-                  //reverse: true,
                 ),
               ),
               SizedBox(
-                child: Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 15),
-                    child: SizedBox(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 100,
-                                child: TextFormField(
-                                  focusNode: myFocusNode,
-                                  maxLines: null,
-                                  controller: _msgEditingController,
-                                  decoration: InputDecoration(
-                                    floatingLabelStyle: const TextStyle(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
+                  child: SizedBox(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 100,
+                              child: TextFormField(
+                                focusNode: myFocusNode,
+                                maxLines: null,
+                                controller: _msgEditingController,
+                                decoration: InputDecoration(
+                                  floatingLabelStyle: const TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 194, 192, 147)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 194, 192, 147),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 194, 192, 147),
+                                    ),
+                                  ),
+                                  label: const Text(
+                                    "Digite uma pergunta ou comando",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         color:
                                             Color.fromARGB(255, 194, 192, 147)),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(50),
-                                      borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 194, 192, 147),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(50),
-                                      borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 194, 192, 147),
-                                      ),
-                                    ),
-                                    label: const Text(
-                                      "Digite uma pergunta ou comando",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
-                                              255, 194, 192, 147)),
-                                    ),
                                   ),
                                 ),
                               ),
-                              const Spacer(),
-                              IconButton(
-                                padding: const EdgeInsets.all(15),
-                                iconSize: 32,
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color.fromARGB(255, 194, 192, 147)),
-                                  foregroundColor: MaterialStateProperty.all(
-                                      const Color.fromARGB(255, 245, 249, 233)),
-                                  shape: MaterialStateProperty.all(
-                                    const CircleBorder(),
-                                  ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              padding: const EdgeInsets.all(15),
+                              iconSize: 32,
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 194, 192, 147)),
+                                foregroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 245, 249, 233)),
+                                shape: MaterialStateProperty.all(
+                                  const CircleBorder(),
                                 ),
-                                onPressed: () {
-                                  if (_msgEditingController.text
-                                      .trim()
-                                      .isNotEmpty) {
-                                    sendMessageToGeminiAI();
-                                    //scrollListToEnd();
-                                    // myFocusNode.requestFocus();
-                                  } else {
-                                    myFocusNode.requestFocus();
-                                  }
-                                },
-                                icon: const Icon(Icons.arrow_upward_sharp),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                              onPressed: () {
+                                if (_msgEditingController.text
+                                    .trim()
+                                    .isNotEmpty) {
+                                  sendMessageToGeminiAI();
+                                  //scrollListToEnd();
+                                  // myFocusNode.requestFocus();
+                                } else {
+                                  myFocusNode.requestFocus();
+                                }
+                              },
+                              icon: const Icon(Icons.arrow_upward_sharp),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

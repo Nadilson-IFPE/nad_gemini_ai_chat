@@ -8,12 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:nad_gemini_ai_chat/my_app.dart';
+import 'package:nad_gemini_ai_chat/my_gemini_app.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const MyGemminiApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
